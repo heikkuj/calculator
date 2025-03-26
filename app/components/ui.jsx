@@ -1,5 +1,12 @@
 import React from 'react'
-import Calculation from './calculation'
+import {
+  add,
+  subtract,
+  multiply,
+  divide,
+  clearCurrent,
+  clearAll
+ } from './calculation'
 
 export default function UI() {
   return (
@@ -26,26 +33,26 @@ export default function UI() {
           {/* Utility buttons */}
         <div className='flex flex-row flex-wrap justify-between w-[300px]'>
           <div className='flex h-auto w-full justify-between my-3'>
-            <button className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>CE</button>
-            <button className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>AC</button>
-            <button className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>÷</button>
-            <button className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>X</button>
+            <button onClick={clearCurrent} className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>CE</button>
+            <button onClick={clearAll} className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>AC</button>
+            <button onClick={divide} className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>÷</button>
+            <button onClick={multiply} className='w-[65px] h-[30px] rounded-full shadow-md bg-amber-300'>X</button>
           </div>
 
-          {/* Number buttons */}
+          {/* Button grid */}
 
           <div className='grid grid-cols-4 gap-2'>
-            <button className='aspect-square rounded-full shadow-md bg-amber-200'>7</button>
-            <button className='aspect-square rounded-full shadow-md bg-amber-200'>8</button>
+            <button value={7} className='aspect-square rounded-full shadow-md bg-amber-200'>7</button>
+            <button  className='aspect-square rounded-full shadow-md bg-amber-200'>8</button>
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>9</button>
 
-            <button className='aspect-square rounded-full shadow-md bg-amber-300'>-</button>
+            <button onClick={subtract} className='aspect-square rounded-full shadow-md bg-amber-300'>-</button>
 
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>4</button>
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>5</button>
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>6</button>
 
-            <button className='aspect-square rounded-full shadow-md bg-amber-300'>+</button>
+            <button onClick={add} className='aspect-square rounded-full shadow-md bg-amber-300'>+</button>
 
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>1</button>
             <button className='aspect-square rounded-full shadow-md bg-amber-200'>2</button>
