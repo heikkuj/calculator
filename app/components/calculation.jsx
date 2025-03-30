@@ -21,8 +21,9 @@ export function useCalculator() {
   }
 
   const handleNumberClick = (number) => {
-    if (!currentValue && number === '.') {
+    if (!currentValue && number === '.' || result && number === '.') {
       // Add leading 0 to decimal point as first input
+      setResult('');
       setPauseValue('');
       setCurrentValue('0')
       addNumber(number);
