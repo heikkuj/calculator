@@ -7,12 +7,13 @@ export function useCalculator() {
   const [num2, setNum2] = useState('');
   const [currentValue, setCurrentValue] = useState('');
   const [result, setResult] = useState('');
-  const [operator, setOperator] = useState(null);
+  const [operation, setOperation] = useState(null);
   const [displayValue, setDisplayValue] = useState('0');
+  const [pauseValue, setPauseValue] = useState('');
 
   useEffect(() => {
-    setDisplayValue(currentValue || result || '0');
-  },[currentValue, result]);
+    setDisplayValue(pauseValue || currentValue || result || '0');
+  },[pauseValue, currentValue, result]);
 
   const addNumber = (input) => {
     setCurrentValue(prevValue => prevValue + input.toString());
@@ -20,75 +21,64 @@ export function useCalculator() {
   }
 
   const handleNumberClick = (number) => {
-    if (
-      !currentValue && number === '.' ||
-      currentValue && result && number === '.') {
-        setResult('');
-        setCurrentValue('0');
-        addNumber(number);
-        console.log('TEST: Add leading 0')
-    } else if (
-      number === '.' && currentValue.includes('.')) {
-        console.log('Error. Number already contains decimal point.');
-        console.log('TEST: Limit to one decimal');
-    } else if (
-      currentValue === '0' && number !== '.') {
-        setCurrentValue('');
-        addNumber(number);
-        console.log('TEST: Remove starting 0');
-      } else if (result) {
-          setNum1(result);
-          setResult('');
-          setCurrentValue('');
-          addNumber(number);
-          console.log('TEST: Continue calc from result');
-      // } else if (
-      //   currentValue &&
-      //   num1
-      // ) {
-      //     setCurrentValue('');
-      //     addNumber(number);
-      //     console.log('TEST: Continue calc.');
-          
-      } else {
-          addNumber(number);
-          console.log('Default');
-        }
+    if (!currentValue && number === '.') {
+      // Add leading 0 to decimal point as first input
+      setPauseValue('');
+      setCurrentValue('0')
+      addNumber(number);
+      console.log('TEST 1');
+      
+    } else if (number == '.' && currentValue.includes('.')) {
+      console.log('Error. Number already contains decimal point.');
+      console.log('TEST 2');
+      
+    } else if (currentValue === '0' && number !== '.') {
+      setPauseValue('');
+      setCurrentValue('');
+      addNumber(number);
+      console.log('TEST 3');
+      
+    } else if (result) {
+      setPauseValue('');
+      setResult('');
+      setCurrentValue('');
+      addNumber(number);
+      console.log('TEST 4');
+
+    } else {
+      setPauseValue('');
+      addNumber(number);
+      console.log('DEFAULT');
+      
+    }
   }
   
   const add = () => {
-    if (num1) {
-      calculateResult;
-    } else {
-    setOperator('+');
-    setNum1(currentValue);}
+    setNum1(currentValue);
+    setPauseValue(currentValue);
+    setOperation('+');
+    setCurrentValue('');
   }
 
   const subtract = () => {
-    if (num1) {
-      calculateResult;
-    } else {
-      setNum1(currentValue);
-      setOperator('-');
-    }
+    setNum1(currentValue);
+    setPauseValue(currentValue);
+    setOperation('-');
+    setCurrentValue('');
   }
 
   const multiply = () => {
-    if (num1) {
-      calculateResult;
-    } else {
     setNum1(currentValue);
-    setOperator('*');
-    }
+    setPauseValue(currentValue);
+    setOperation('*');
+    setCurrentValue('');
   }
 
   const divide = () => {
-    if (num1) {
-      calculateResult;
-    } else {
-      setNum1(currentValue);
-      setOperator('/');
-    }
+    setNum1(currentValue);
+    setPauseValue(currentValue);
+    setOperation('/');
+    setCurrentValue('');
   }
 
   const calculateResult = () => {
@@ -96,7 +86,7 @@ export function useCalculator() {
     const y = parseFloat(currentValue);
     let calculatedResult;
     
-    switch(operator) {
+    switch(operation) {
       case '+':
         calculatedResult = x + y;
         break;
@@ -117,11 +107,11 @@ export function useCalculator() {
     setResult(calculatedResult.toString());
     setCurrentValue(calculatedResult.toString().substring(0, 14));
     setNum1('');
-    setOperator(null);
+    setOperation(null);
   }
 
   const clearCurrent = () => {
-    if (result && currentValue && !operator) {
+    if (result && currentValue && !operation) {
       setResult('');
       setCurrentValue('');
     } else if (currentValue) {
@@ -134,7 +124,7 @@ export function useCalculator() {
     setNum2('');
     setCurrentValue('');
     setResult('');
-    setOperator(null);
+    setOperation(null);
   }
 
   return {
@@ -149,6 +139,7 @@ export function useCalculator() {
     clearAll,
     currentValue,
     displayValue,
+    pauseValue,
     result
   };
 }
